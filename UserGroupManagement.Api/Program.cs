@@ -1,4 +1,3 @@
-
 using UserGroupManagement.Service;
 
 namespace UserGroupManagement.Api
@@ -16,7 +15,9 @@ namespace UserGroupManagement.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddUserGroupManagementServices();
+            
+
+            builder.Services.AddUserGroupManagementServices(builder.Configuration);
 
             var app = builder.Build();
 

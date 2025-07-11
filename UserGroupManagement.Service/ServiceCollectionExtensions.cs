@@ -3,6 +3,9 @@ using UserGroupManagement.Repository.Interfaces;
 using UserGroupManagement.Repository.Implementations;
 using UserGroupManagement.Service.Interfaces;
 using UserGroupManagement.Service.Implementations;
+using UserGroupManagement.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace UserGroupManagement.Service
 {
@@ -14,8 +17,11 @@ namespace UserGroupManagement.Service
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddUserGroupManagementServices(this IServiceCollection services)
+        public static IServiceCollection AddUserGroupManagementServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<DataContext>(options =>
+                        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
 
