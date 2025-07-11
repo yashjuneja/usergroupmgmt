@@ -1,0 +1,6 @@
+@UserGroupManagement.Api_HostAddress = http://localhost:5110
+
+GET {{UserGroupManagement.Api_HostAddress}}/
+Accept: application/json
+
+###

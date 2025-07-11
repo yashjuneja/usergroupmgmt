@@ -1,0 +1,10 @@
+# Ignore Visual Studio local workspace files
+.vs/
+
+# Ignore build output
+bin/
+obj/
+
+# User-specific
+*.user
+*.suo
