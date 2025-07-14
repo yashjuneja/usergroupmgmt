@@ -1,0 +1,39 @@
+﻿@page "/users"
+@inject IUserApiService userService;
+
+@using UserGroupManagement.Client.Services
+@using UserGroupManagement.Common.DTOs
+
+<h3>Users</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Age</td>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users ?? new List<UserDto>())
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Age</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<UserDto>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //return base.OnInitializedAsync();
+        users = await userService.GetAllUsersAsync();
+    }
+}

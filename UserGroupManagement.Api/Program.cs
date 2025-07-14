@@ -18,8 +18,16 @@ namespace UserGroupManagement.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
             builder.Services.AddUserGroupManagementServices(builder.Configuration);
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowBlazorClient",
+                    policy => policy
+                                .WithOrigins("https://localhost:7220")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod());
+            });
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -62,6 +70,8 @@ namespace UserGroupManagement.Api
             //        }
             //    });
             //});
+
+            app.UseCors("AllowBlazorClient");
 
             app.MapControllers();
 
