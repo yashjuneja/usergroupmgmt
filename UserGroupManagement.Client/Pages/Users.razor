@@ -1,32 +1,47 @@
 ﻿@page "/users"
 @inject IUserApiService userService;
+@inject NavigationManager navigationManager;
 
 @using UserGroupManagement.Client.Services
 @using UserGroupManagement.Common.DTOs
 
 <h3>Users</h3>
 
-<table class="table">
-    <thead>
-    <tr>
-        <td>Id</td>
-        <td>Name</td>
-        <td>Email</td>
-        <td>Age</td>
-    </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in users ?? new List<UserDto>())
-        {
-            <tr>
-                <td>@user.Id</td>
-                <td>@user.FirstName @user.LastName</td>
-                <td>@user.Email</td>
-                <td>@user.Age</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<p><button @onclick="@(() => navigationManager.NavigateTo("/add-user"))">Add User</button></p>
+
+@if(users == null)
+{
+    <p><em>Loading....</em></p>    
+}else
+{
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users ?? new List<UserDto>())
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Age</td>
+                    <td>
+                        <button @onclick="@(() => Edit(user.Id))">Edit</button>
+                        <button @onclick="@(() => Delete(user.Id))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     List<UserDto>? users;
@@ -34,6 +49,14 @@
     protected override async Task OnInitializedAsync()
     {
         //return base.OnInitializedAsync();
+        users = await userService.GetAllUsersAsync();
+    }
+
+    void Edit(int id) => navigationManager.NavigateTo($"/edit-user/{id}");
+
+    async Task Delete(int id)
+    {
+        await userService.DeleteUserAsync(id);
         users = await userService.GetAllUsersAsync();
     }
 }

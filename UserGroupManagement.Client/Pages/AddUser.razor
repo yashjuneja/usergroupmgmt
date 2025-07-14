@@ -1,0 +1,47 @@
+﻿@page "/add-user"
+
+@using UserGroupManagement.Client.Services
+@using UserGroupManagement.Common.DTOs
+
+
+@inject IUserApiService userService;
+@inject NavigationManager navigationManager;
+
+<h3>Add User</h3>
+
+<EditForm Model="@newUser" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>First Name:</label>
+        <InputText @bind-Value="newUser.FirstName" class="form-control" />
+    </div>
+
+    <div>
+        <label>Last Name:</label>
+        <InputText @bind-Value="newUser.LastName" class="form-control" />
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="newUser.Email" class="form-control" />
+    </div>
+
+    <div>
+        <label>Age:</label>
+        <InputNumber @bind-Value="newUser.Age" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+@code {
+    UserDto newUser = new();
+
+    async Task HandleValidSubmit()
+    {
+        await userService.CreateUserAsync(newUser);
+        navigationManager.NavigateTo("/users");
+    }
+}
