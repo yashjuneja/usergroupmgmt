@@ -23,7 +23,7 @@ namespace UserGroupManagement.Api
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MappingProfiles());
+                mc.AddProfile(new Common.AutoMapper());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

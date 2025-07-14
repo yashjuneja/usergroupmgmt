@@ -15,14 +15,14 @@ namespace UserGroupManagement.Api.Controllers
             _groupService = groupService;
         }
 
-        [HttpGet]
+        [HttpGet("GetGroups")]
         public async Task<IActionResult> GetAll()
         {
             var groups = await _groupService.GetAllAsync();
             return Ok(groups);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetGroupById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var group = await _groupService.GetByIdAsync(id);
@@ -32,7 +32,7 @@ namespace UserGroupManagement.Api.Controllers
             return Ok(group);
         }
 
-        [HttpPost]
+        [HttpPost("CreateGroup")]
         public async Task<IActionResult> Create([FromBody] GroupCreateDto dto)
         {
             if (!ModelState.IsValid)
@@ -42,7 +42,7 @@ namespace UserGroupManagement.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdGroup.Id }, createdGroup);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateGroup/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody]GroupUpdateDto dto)
         {
             if(!ModelState.IsValid)
@@ -55,7 +55,7 @@ namespace UserGroupManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteGroup/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

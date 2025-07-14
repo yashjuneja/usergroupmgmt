@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using UserGroupManagement.Common.DTOs;
 using UserGroupManagement.Repository.Entities;
 using UserGroupManagement.Repository.Interfaces;
@@ -32,7 +33,7 @@ namespace UserGroupManagement.Service.Implementations
         public async Task<UserDto> CreateAsync(UserDto dto)
         {
             var userEntity = _mapper.Map<User>(dto);
-            var savedUser = await _userRepository.AddAsync(userEntity);
+            var savedUser = await _userRepository.CreateAsync(userEntity);
             return _mapper.Map<UserDto>(savedUser);
         }
 

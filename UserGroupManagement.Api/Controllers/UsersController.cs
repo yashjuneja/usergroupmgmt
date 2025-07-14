@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using UserGroupManagement.Common.DTOs;
 using UserGroupManagement.Service.Interfaces;
 
@@ -9,36 +10,40 @@ namespace UserGroupManagement.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IMapper _mapper;
+        public UsersController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetUsers")]
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetUserbyId/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var user = await _userService.GetAsync(id);
-            return Ok(user);
+            return user == null ? NotFound("User does not exist") : Ok(user);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(UserDto dto)
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> Create(UserCreateDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-           
-            var result = await _userService.CreateAsync(dto);
+
+            var userDto = _mapper.Map<UserDto>(dto);
+            
+            var result = await _userService.CreateAsync(userDto);
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("UpdateUser/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody]UserDto userDto)
         {
             if (!ModelState.IsValid)
@@ -51,7 +56,7 @@ namespace UserGroupManagement.Api.Controllers
             return Ok(user);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteUser/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _userService.DeleteAsync(id);

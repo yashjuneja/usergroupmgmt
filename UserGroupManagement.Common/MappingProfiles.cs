@@ -4,16 +4,17 @@ using UserGroupManagement.Repository.Entities;
 
 namespace UserGroupManagement.Common
 {
-    public class MappingProfiles : Profile
+    public class AutoMapper : Profile
     {
-        public MappingProfiles()
+        public AutoMapper()
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Group, GroupDto>()
                 .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.UserGroups.Select(ug => ug.User)));
 
             //CreateMap<GroupDto, Group>();
-            
+            CreateMap<UserCreateDto, UserDto>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

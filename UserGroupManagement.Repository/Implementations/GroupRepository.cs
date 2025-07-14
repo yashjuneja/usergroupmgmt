@@ -13,7 +13,7 @@ namespace UserGroupManagement.Repository.Implementations
             _context = context;
         }
 
-        public async Task<Group> AddAsync(Group group, List<int> memberIds)
+        public async Task<Group> CreateAsync(Group group, List<int> memberIds)
         {
             foreach (var userId in memberIds)
             {

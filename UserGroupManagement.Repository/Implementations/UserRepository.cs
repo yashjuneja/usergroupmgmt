@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using UserGroupManagement.Repository.Entities;
 using UserGroupManagement.Repository.Interfaces;
 
@@ -24,12 +25,37 @@ namespace UserGroupManagement.Repository.Implementations
                     .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<User> AddAsync(User user)
+        public async Task<User> CreateAsync(User user)
         {
+
             _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                if (IsUniqueConstraintViolation(ex))
+                    throw new ArgumentException("Email address must be unique.");
+
+                throw;
+            }
             return user;
+
         }
+
+        private bool IsUniqueConstraintViolation(DbUpdateException ex)
+        {
+            if (ex.InnerException is SqlException sqlEx)
+            {
+                // 2627: Violation of PRIMARY KEY or UNIQUE constraint
+                // 2601: Cannot insert duplicate key row in object
+                return sqlEx.Number == 2627 || sqlEx.Number == 2601;
+            }
+
+            return false;
+        }
+
 
         public async Task<User> UpdateAsync(User user)
         {

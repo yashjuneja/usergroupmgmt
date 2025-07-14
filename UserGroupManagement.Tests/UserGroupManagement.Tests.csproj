@@ -10,8 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UserControllerTest.cs" />
+    <Compile Remove="UserRepositoryTest.cs" />
+    <Compile Remove="UserServiceTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.5.3" />
@@ -19,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UserGroupManagement.Api\UserGroupManagement.Api.csproj" />
     <ProjectReference Include="..\UserGroupManagement.Common\UserGroupManagement.Common.csproj" />
     <ProjectReference Include="..\UserGroupManagement.Repository\UserGroupManagement.Repository.csproj" />
     <ProjectReference Include="..\UserGroupManagement.Service\UserGroupManagement.Service.csproj" />

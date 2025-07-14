@@ -26,7 +26,7 @@ namespace UserGroupManagement.Service.Implementations
                 dto.MemberIds = new List<int>();
 
             var groupEntity = new Group { GroupName = dto.GroupName };
-            var createdGroup = await _groupRepository.AddAsync(groupEntity, dto.MemberIds);
+            var createdGroup = await _groupRepository.CreateAsync(groupEntity, dto.MemberIds);
 
             return new GroupDto
             {
