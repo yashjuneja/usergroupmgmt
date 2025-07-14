@@ -7,7 +7,7 @@ namespace UserGroupManagement.Service.Interfaces
         Task<GroupDto> CreateAsync(GroupCreateDto dto);
         Task<IEnumerable<GroupDto>> GetAllAsync();
         Task<GroupDto> GetByIdAsync(int id);
-        Task<GroupDto> UpdateAsync(GroupDto dto);
-        Task DeleteAsync(int id);
+        Task<GroupDto> UpdateAsync(GroupUpdateDto dto);
+        Task<GroupDto> DeleteAsync(int id);
     }
 }

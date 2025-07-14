@@ -15,15 +15,11 @@ namespace UserGroupManagement.Api.Controllers
             _groupService = groupService;
         }
 
-        // POST: api/Groups
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]GroupCreateDto dto)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            if(!ModelState.IsValid) 
-                return BadRequest(ModelState);
-
-            var createdGroup = await _groupService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new {id = createdGroup.Id}, createdGroup);
+            var groups = await _groupService.GetAllAsync();
+            return Ok(groups);
         }
 
         [HttpGet("{id}")]
@@ -36,37 +32,45 @@ namespace UserGroupManagement.Api.Controllers
             return Ok(group);
         }
 
-        // GET: api/Groups
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] GroupCreateDto dto)
         {
-            var groups = await _groupService.GetAllAsync();
-            return Ok(groups);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var createdGroup = await _groupService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = createdGroup.Id }, createdGroup);
         }
 
-        // GET: api/Groups/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Get(int id)
-        //{
-        //    var group = await _groupService.GetByIdAsync(id);
-        //    return Ok(group);
-        //}
-
-        // PUT: api/Groups
         [HttpPut]
-        public async Task<IActionResult> Update(GroupDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody]GroupUpdateDto dto)
         {
-            if (dto == null) return BadRequest("Invalid group data.");
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != dto.Id) 
+                return BadRequest("Id mismatch.");
+
             var result = await _groupService.UpdateAsync(dto);
             return Ok(result);
         }
 
-        // DELETE: api/Groups/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _groupService.DeleteAsync(id);
-            return Ok();
+            try
+            {
+                var deletedGroup = await _groupService.DeleteAsync(id);
+                return Ok(deletedGroup);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An unexpected error occurred.");
+            }
         }
     }
 }

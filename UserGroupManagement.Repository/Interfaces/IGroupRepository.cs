@@ -8,6 +8,6 @@ namespace UserGroupManagement.Repository.Interfaces
         Task<IEnumerable<Group>> GetAllAsync();
         Task<Group?> GetByIdAsync(int id);
         Task<Group> UpdateAsync(Group group, List<int> memberIds);
-        Task DeleteAsync(int id);
+        Task<Group> DeleteAsync(int id);
     }
 }

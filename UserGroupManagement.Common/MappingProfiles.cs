@@ -8,13 +8,12 @@ namespace UserGroupManagement.Common
     {
         public MappingProfiles()
         {
-            //CreateMap<UserEntity, User>().ReverseMap();
-            //CreateMap<GroupEntity, Group>().ReverseMap();
-            //CreateMap<UserDto, User>().ReverseMap();
-            //CreateMap<GroupDto, Group>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<Group, GroupDto>().ReverseMap();
-            //CreateMap<Group, GroupDto>().ReverseMap();
+            CreateMap<Group, GroupDto>()
+                .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.UserGroups.Select(ug => ug.User)));
+
+            //CreateMap<GroupDto, Group>();
+            
         }
     }
 }
