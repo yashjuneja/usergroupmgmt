@@ -1,6 +1,10 @@
-﻿namespace UserGroupManagement.Service.Interfaces
+﻿using UserGroupManagement.Common.DTOs;
+
+namespace UserGroupManagement.Service.Interfaces
 {
-    internal interface IUserService
+    public interface IUserService
     {
+        Task<IEnumerable<UserDto>> GetAllAsync();
+        Task<UserDto> AddAsync(UserDto userDto);
     }
 }

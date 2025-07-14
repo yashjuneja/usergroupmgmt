@@ -7,15 +7,25 @@ namespace UserGroupManagement.Repository
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         
-        public DbSet<UserEntity> Users { get; set; }
-        public DbSet<GroupEntity> Groups { get; set; }
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Group> Groups => Set<Group>();
+        public DbSet<UserGroup> UserGroups => Set<UserGroup>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserEntity>()
-                .HasMany(u => u.Groups)
-                .WithMany(g => g.Users);
+            modelBuilder.Entity<UserGroup>()
+                .HasKey(ug => new {ug.UserId, ug.GroupId });
+
+            modelBuilder.Entity<UserGroup>()
+                .HasOne(ug => ug.User)
+                .WithMany(u => u.UserGroups)
+                .HasForeignKey(ug => ug.UserId);
+
+            modelBuilder.Entity<UserGroup>()
+                .HasOne(ug => ug.Group)
+                .WithMany(g => g.UserGroups)
+                .HasForeignKey(ug => ug.GroupId);
         }
 
     }

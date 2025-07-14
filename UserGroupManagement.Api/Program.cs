@@ -1,4 +1,6 @@
+using AutoMapper;
 using UserGroupManagement.Service;
+using UserGroupManagement.Common;
 
 namespace UserGroupManagement.Api
 {
@@ -16,8 +18,17 @@ namespace UserGroupManagement.Api
             builder.Services.AddSwaggerGen();
 
             
-
             builder.Services.AddUserGroupManagementServices(builder.Configuration);
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfiles());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            builder.Services.AddSingleton(mapper);
+
+            //builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             var app = builder.Build();
 
