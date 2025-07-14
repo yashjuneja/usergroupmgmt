@@ -29,16 +29,16 @@ namespace UserGroupManagement.Service.Implementations
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<UserDto> AddAsync(UserDto userDto)
+        public async Task<UserDto> CreateAsync(UserDto dto)
         {
-            var userEntity = _mapper.Map<User>(userDto);
+            var userEntity = _mapper.Map<User>(dto);
             var savedUser = await _userRepository.AddAsync(userEntity);
             return _mapper.Map<UserDto>(savedUser);
         }
 
-        public async Task<UserDto> UpdateAsync(UserDto userDto)
+        public async Task<UserDto> UpdateAsync(UserDto dto)
         {
-            var userEntity = _mapper.Map<User>(userDto);
+            var userEntity = _mapper.Map<User>(dto);
             var updateduser = await _userRepository.UpdateAsync(userEntity);
             return _mapper.Map<UserDto>(updateduser);
         }

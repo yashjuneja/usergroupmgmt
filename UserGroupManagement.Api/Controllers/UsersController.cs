@@ -29,12 +29,12 @@ namespace UserGroupManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserDto userDto)
+        public async Task<IActionResult> Create(UserDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
            
-            var result = await _userService.AddAsync(userDto);
+            var result = await _userService.CreateAsync(dto);
             return Ok(result);
         }
 

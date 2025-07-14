@@ -24,7 +24,7 @@ namespace UserGroupManagement.Tests
             var service = new UserService(mockRepo.Object, mapper);
 
             var dto = new UserDto { FirstName = "Test", LastName = "User", Age = 50, Email = "test.user@sample.com" };
-            var user = await service.AddAsync(dto);
+            var user = await service.CreateAsync(dto);
 
             mockRepo.Verify(p => p.AddAsync(It.IsAny<User>()), Times.Once);
             Assert.Equal("Test", user.FirstName);
