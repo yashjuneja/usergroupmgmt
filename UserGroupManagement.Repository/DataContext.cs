@@ -14,6 +14,10 @@ namespace UserGroupManagement.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             modelBuilder.Entity<UserGroup>()
                 .HasKey(ug => new {ug.UserId, ug.GroupId });
 

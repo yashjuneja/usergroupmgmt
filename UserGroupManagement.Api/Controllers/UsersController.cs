@@ -21,23 +21,41 @@ namespace UserGroupManagement.Api.Controllers
             return Ok(users);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var user = await _userService.GetAsync(id);
+            return Ok(user);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(UserDto userDto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-            try
-            {
-                var result = await _userService.AddAsync(userDto);
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
+           
+            var result = await _userService.AddAsync(userDto);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody]UserDto userDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != userDto.Id)
+                return BadRequest("Id mismatch");
+
+            var user = await _userService.UpdateAsync(userDto);
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var user = await _userService.DeleteAsync(id);
+            return Ok(user);
         }
     }
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
-using UserGroupManagement.Service;
+using UserGroupManagement.Api.Middlewares;
 using UserGroupManagement.Common;
+using UserGroupManagement.Service;
 
 namespace UserGroupManagement.Api
 {
@@ -43,6 +44,24 @@ namespace UserGroupManagement.Api
 
             app.UseAuthorization();
 
+            //app.UseMiddleware<Middlewares.GlobalExceptionMiddleware>();
+            app.UseGlobalExceptionMiddleware();
+
+            //app.UseExceptionHandler(error =>
+            //{
+            //    error.Run(async context =>
+            //    {
+            //        context.Response.StatusCode = 500;
+            //        context.Response.ContentType = "application/json";
+
+            //        var exceptionhandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+            //        if (exceptionhandlerPathFeature?.Error != null) { 
+            //            var errorResponse = new {error = exceptionhandlerPathFeature.Error.Message};
+            //            await context.Response.WriteAsJsonAsync(errorResponse);
+            //        }
+            //    });
+            //});
 
             app.MapControllers();
 

@@ -23,21 +23,30 @@ namespace UserGroupManagement.Service.Implementations
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
+        public async Task<UserDto> GetAsync(int id)
+        {
+            var user = await _userRepository.GetAsync(id);
+            return _mapper.Map<UserDto>(user);
+        }
+
         public async Task<UserDto> AddAsync(UserDto userDto)
         {
-            if (string.IsNullOrEmpty(userDto.FirstName) || string.IsNullOrEmpty(userDto.LastName))
-                throw new ArgumentNullException("First and Last name are required");
-
-            if (userDto.Age < 0)
-                throw new ArgumentException("Age must be positive number");
-
-            if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(userDto.Email))
-                throw new ArgumentException("Invalid email");
-                
-
             var userEntity = _mapper.Map<User>(userDto);
             var savedUser = await _userRepository.AddAsync(userEntity);
             return _mapper.Map<UserDto>(savedUser);
+        }
+
+        public async Task<UserDto> UpdateAsync(UserDto userDto)
+        {
+            var userEntity = _mapper.Map<User>(userDto);
+            var updateduser = await _userRepository.UpdateAsync(userEntity);
+            return _mapper.Map<UserDto>(updateduser);
+        }
+
+        public async Task<UserDto> DeleteAsync(int id)
+        {
+            var deletedUser = await _userRepository.DeleteAsync(id);
+            return _mapper.Map<UserDto>(deletedUser);
         }
     }
 }
