@@ -4,7 +4,7 @@
 @using UserGroupManagement.Common.DTOs
 
 
-@inject IUserApiService userService;
+@inject IUserApiService userApiService;
 @inject NavigationManager navigationManager;
 
 <h3>Add User</h3>
@@ -41,7 +41,7 @@
 
     async Task HandleValidSubmit()
     {
-        await userService.CreateUserAsync(newUser);
+        await userApiService.CreateUserAsync(newUser);
         navigationManager.NavigateTo("/users");
     }
 }

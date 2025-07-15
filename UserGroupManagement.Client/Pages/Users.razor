@@ -1,5 +1,5 @@
 ﻿@page "/users"
-@inject IUserApiService userService;
+@inject IUserApiService userApiService;
 @inject NavigationManager navigationManager;
 
 @using UserGroupManagement.Client.Services
@@ -49,14 +49,14 @@
     protected override async Task OnInitializedAsync()
     {
         //return base.OnInitializedAsync();
-        users = await userService.GetAllUsersAsync();
+        users = await userApiService.GetAllUsersAsync();
     }
 
     void Edit(int id) => navigationManager.NavigateTo($"/edit-user/{id}");
 
     async Task Delete(int id)
     {
-        await userService.DeleteUserAsync(id);
-        users = await userService.GetAllUsersAsync();
+        await userApiService.DeleteUserAsync(id);
+        users = await userApiService.GetAllUsersAsync();
     }
 }

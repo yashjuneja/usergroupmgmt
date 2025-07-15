@@ -37,7 +37,7 @@ namespace UserGroupManagement.Client.Services
 
         public async Task<UserDto> UpdateUserAsync(UserDto user)
         {
-            var response = await _httpClient.PostAsJsonAsync($"api/Users/UpdateUser/{user.Id}", user);
+            var response = await _httpClient.PutAsJsonAsync($"api/Users/UpdateUser/{user.Id}", user);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<UserDto>();
         }

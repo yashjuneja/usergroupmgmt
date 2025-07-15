@@ -1,0 +1,52 @@
+﻿@page "/add-group"
+@using UserGroupManagement.Client.Services
+@using UserGroupManagement.Common.DTOs
+@inject IGroupApiService groupApiService
+@inject NavigationManager navigationManager
+
+<h3>Add Group</h3>
+
+<EditForm Model="@group" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Name:</label>
+        <InputText class="form-control" @bind-Value="group.GroupName" />
+
+    </div>
+
+    <div class="mb-3">
+        <label>Members:</label>
+        <select multiple class="form-control" @bind="@userIds">
+            @foreach(var user in users)
+            {
+                <option value="@user.Id">@user.FirstName @user.LastName</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>
+
+@code {
+    private GroupDto group = new();
+    private List<UserDto> users = new();
+    private List<int> userIds = new();
+
+    [Inject]
+    public IUserApiService UserApiService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //return base.OnInitializedAsync();
+        users = await UserApiService.GetAllUsersAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        group.Members = users.Where(predicate => userIds.Contains(predicate.Id)).ToList();
+        await groupApiService.CreateGroupAsync(group);
+        navigationManager.NavigateTo("/groups");
+    }
+}

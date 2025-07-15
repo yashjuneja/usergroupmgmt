@@ -12,9 +12,11 @@ namespace UserGroupManagement.Client
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7299/") });
+            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7299/") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5110/") });
 
             builder.Services.AddScoped<IUserApiService, UserApiService>();
+            builder.Services.AddScoped<IGroupApiService, GroupApiService>();
 
             await builder.Build().RunAsync();
         }

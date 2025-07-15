@@ -1,0 +1,59 @@
+﻿@page "/groups"
+@inject IGroupApiService groupService;
+@inject NavigationManager navigationManager;
+
+@using UserGroupManagement.Client.Services
+@using UserGroupManagement.Common.DTOs
+
+<h3>Groups</h3>
+
+<p><button @onclick="@(() => navigationManager.NavigateTo("/add-group"))">Add Group</button></p>
+
+@if(groups == null)
+{
+    <p><em>Loading....</em></p>
+}
+else if (!groups.Any())
+{
+    <p><em>No groups found.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in groups)
+            {
+                <tr>
+                    <td>@group.Id</td>
+                    <td>@group.GroupName</td>                    
+                    <td>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => navigationManager.NavigateTo($"/edit-group/{group.Id}"))">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteGroup(group.Id))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<GroupDto> groups;
+
+    protected override async Task OnInitializedAsync()
+    {
+        groups = await groupService.GetAllGroupsAsync();
+    }
+
+    private async Task DeleteGroup(int id)
+    {
+        await groupService.DeleteGroupAsync(id);
+        groups = await groupService.GetAllGroupsAsync();
+    }
+}

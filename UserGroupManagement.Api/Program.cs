@@ -24,7 +24,8 @@ namespace UserGroupManagement.Api
             {
                 options.AddPolicy("AllowBlazorClient",
                     policy => policy
-                                .WithOrigins("https://localhost:7220")
+                                //.WithOrigins("https://localhost:7220")
+                                .WithOrigins("http://localhost:5137")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod());
             });
