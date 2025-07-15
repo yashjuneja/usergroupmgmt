@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserGroupManagement.Tests", "UserGroupManagement.Tests\UserGroupManagement.Tests.csproj", "{B28C92E5-EAE8-4D64-8B8B-CC364A0672B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Script.sql = Script.sql
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserGroupManagement.Client", "UserGroupManagement.Client\UserGroupManagement.Client.csproj", "{F731A57C-D307-4ADF-9998-7B3781CE11D4}"
 EndProject

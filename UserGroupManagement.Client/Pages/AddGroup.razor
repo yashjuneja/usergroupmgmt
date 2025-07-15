@@ -1,4 +1,5 @@
 ﻿@page "/add-group"
+
 @using UserGroupManagement.Client.Services
 @using UserGroupManagement.Common.DTOs
 @inject IGroupApiService groupApiService
@@ -6,7 +7,7 @@
 
 <h3>Add Group</h3>
 
-<EditForm Model="@group" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="group" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -18,7 +19,8 @@
 
     <div class="mb-3">
         <label>Members:</label>
-        <select multiple class="form-control" @bind="@userIds">
+        <select multiple class="form-control" @onchange="OnMembersChanged" >
+            @* @bind="@userIds"> *@
             @foreach(var user in users)
             {
                 <option value="@user.Id">@user.FirstName @user.LastName</option>
@@ -41,6 +43,19 @@
     {
         //return base.OnInitializedAsync();
         users = await UserApiService.GetAllUsersAsync();
+    }
+
+    private void OnMembersChanged(ChangeEventArgs e)
+    {
+        var selectedOptions = (e.Value as IEnumerable<string>) ?? new[] { e.Value?.ToString() ?? "" };
+
+        userIds = selectedOptions
+                            .Where(id => !string.IsNullOrWhiteSpace(id))
+                            .Select(int.Parse)
+                            .ToList();
+
+        group.Members = users.Where(p => userIds.Contains(p.Id))
+                                    .ToList();
     }
 
     private async Task HandleValidSubmit()

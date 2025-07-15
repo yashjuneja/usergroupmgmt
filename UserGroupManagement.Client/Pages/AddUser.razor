@@ -9,7 +9,7 @@
 
 <h3>Add User</h3>
 
-<EditForm Model="@newUser" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@newUser" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 

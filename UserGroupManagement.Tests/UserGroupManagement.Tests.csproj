@@ -26,13 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserGroupManagement.Api\UserGroupManagement.Api.csproj" />
-    <ProjectReference Include="..\UserGroupManagement.Common\UserGroupManagement.Common.csproj" />
-    <ProjectReference Include="..\UserGroupManagement.Repository\UserGroupManagement.Repository.csproj" />
-    <ProjectReference Include="..\UserGroupManagement.Service\UserGroupManagement.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

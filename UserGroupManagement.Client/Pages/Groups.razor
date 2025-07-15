@@ -34,7 +34,7 @@ else
                     <td>@group.Id</td>
                     <td>@group.GroupName</td>                    
                     <td>
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => navigationManager.NavigateTo($"/edit-group/{group.Id}"))">Edit</button>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => Edit(group.Id))">Edit</button>
                         <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteGroup(group.Id))">Delete</button>
                     </td>
                 </tr>
@@ -50,6 +50,8 @@ else
     {
         groups = await groupService.GetAllGroupsAsync();
     }
+
+    void Edit(int id) => navigationManager.NavigateTo($"/edit-group/{id}");
 
     private async Task DeleteGroup(int id)
     {

@@ -1,12 +1,12 @@
-﻿@page "/edit-group/{Id:int}"
+﻿@page "/edit-group/{id:int}"
 @using UserGroupManagement.Client.Services
 @using UserGroupManagement.Common.DTOs
-@inject IGroupApiService groupApiService;
-@inject NavigationManager navigationManager;
+@inject IGroupApiService groupApiService
+@inject NavigationManager navigationManager
 
 <h3>Edit Group</h3>
 
-<EditForm>
+<EditForm Model="group" OnInvalidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -17,13 +17,16 @@
 
     <div class="mb-3">
         <label>Members:</label>
-        <select multiple class="form-control" @bind="@userIds">
+        <select multiple class="form-control" @onchange="OnMembersChanged">
+            @* @bind="@userIds" *@
             @foreach(var user in users)
             {
                 <option value="@user.Id">@user.FirstName @user.LastName</option>
             }
         </select>
     </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
 </EditForm>
 
 @code {
@@ -48,6 +51,19 @@
             group = existing;
             userIds = group.Members.Select(prop => prop.Id).ToList();
         }
+    }
+
+    private void OnMembersChanged(ChangeEventArgs e)
+    {
+        var selectedOptions = (e.Value as IEnumerable<string>) ?? new[] { e.Value?.ToString() ?? "" };
+
+        userIds = selectedOptions
+                            .Where(id => !string.IsNullOrWhiteSpace(id))
+                            .Select(int.Parse)
+                            .ToList();
+
+        group.Members = users.Where(p => userIds.Contains(p.Id))
+                                    .ToList();
     }
 
     private async Task HandleValidSubmit()
